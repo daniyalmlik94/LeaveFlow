@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardPage from './pages/DashboardPage'
+import LeaveRequestCreatePage from './pages/LeaveRequestCreatePage'
+import LeaveRequestListPage from './pages/LeaveRequestListPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 
@@ -14,6 +16,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/leave-requests"
+        element={
+          <ProtectedRoute>
+            <LeaveRequestListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/leave-requests/new"
+        element={
+          <ProtectedRoute>
+            <LeaveRequestCreatePage />
           </ProtectedRoute>
         }
       />

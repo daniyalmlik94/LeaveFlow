@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const ROLE_LABEL: Record<string, string> = {
@@ -44,6 +44,14 @@ export default function DashboardPage() {
         >
           {ROLE_LABEL[user.role] ?? user.role}
         </span>
+        <div className="mt-6">
+          <Link
+            to="/leave-requests"
+            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+          >
+            My Leave Requests →
+          </Link>
+        </div>
       </main>
     </div>
   )
