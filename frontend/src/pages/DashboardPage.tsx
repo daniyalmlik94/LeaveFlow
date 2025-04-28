@@ -44,10 +44,18 @@ export default function DashboardPage() {
         >
           {ROLE_LABEL[user.role] ?? user.role}
         </span>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col gap-3">
+          {user.role === 'manager' && (
+            <Link
+              to="/manager/queue"
+              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Pending Requests →
+            </Link>
+          )}
           <Link
             to="/leave-requests"
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            className={`text-sm font-medium ${user.role === 'manager' ? 'text-gray-500 hover:text-gray-800' : 'text-blue-600 hover:text-blue-800'}`}
           >
             My Leave Requests →
           </Link>

@@ -2,8 +2,10 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardPage from './pages/DashboardPage'
 import LeaveRequestCreatePage from './pages/LeaveRequestCreatePage'
+import LeaveRequestDetailPage from './pages/LeaveRequestDetailPage'
 import LeaveRequestListPage from './pages/LeaveRequestListPage'
 import LoginPage from './pages/LoginPage'
+import ManagerQueuePage from './pages/ManagerQueuePage'
 import RegisterPage from './pages/RegisterPage'
 
 export default function App() {
@@ -32,6 +34,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <LeaveRequestCreatePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/leave-requests/:id"
+        element={
+          <ProtectedRoute>
+            <LeaveRequestDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/queue"
+        element={
+          <ProtectedRoute>
+            <ManagerQueuePage />
           </ProtectedRoute>
         }
       />

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DecideLeaveRequest;
 use App\Http\Requests\StoreLeaveRequest;
 use App\Models\LeaveRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -16,10 +17,14 @@ class LeaveRequestController extends Controller
     {
         $this->authorize('viewAny', LeaveRequest::class);
 
-        $requests = LeaveRequest::query()
+        $requests = LeaveRequest::with('user')
             ->when(
                 $request->user()->role === 'employee',
                 fn ($q) => $q->where('user_id', $request->user()->id)
+            )
+            ->when(
+                $request->has('status'),
+                fn ($q) => $q->where('status', $request->query('status'))
             )
             ->latest()
             ->get();
@@ -44,6 +49,20 @@ class LeaveRequestController extends Controller
     {
         $this->authorize('view', $leaveRequest);
 
-        return response()->json($leaveRequest);
+        return response()->json($leaveRequest->load('user', 'decider'));
+    }
+
+    public function decide(DecideLeaveRequest $request, LeaveRequest $leaveRequest): JsonResponse
+    {
+        $this->authorize('decide', $leaveRequest);
+
+        $leaveRequest->update([
+            'status' => $request->validated('decision'),
+            'decided_by' => $request->user()->id,
+            'decision_note' => $request->validated('note'),
+            'decided_at' => now(),
+        ]);
+
+        return response()->json($leaveRequest->fresh(['user', 'decider']));
     }
 }

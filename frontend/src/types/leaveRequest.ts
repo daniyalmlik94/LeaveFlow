@@ -1,9 +1,18 @@
 export type LeaveRequestType = 'vacation' | 'sick' | 'personal'
 export type LeaveRequestStatus = 'pending' | 'approved' | 'rejected'
 
+export interface LeaveRequestUser {
+  id: number
+  name: string
+  email: string
+  role: string
+}
+
 export interface LeaveRequest {
   id: number
   user_id: number
+  user?: LeaveRequestUser
+  decider?: LeaveRequestUser | null
   type: LeaveRequestType
   start_date: string
   end_date: string
@@ -21,4 +30,9 @@ export interface CreateLeaveRequestPayload {
   start_date: string
   end_date: string
   reason: string
+}
+
+export interface DecideLeaveRequestPayload {
+  decision: 'approved' | 'rejected'
+  note?: string
 }
