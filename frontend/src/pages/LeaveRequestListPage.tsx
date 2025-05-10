@@ -1,23 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { getLeaveRequests } from '../api/leaveRequests'
-import type { LeaveRequestStatus } from '../types/leaveRequest'
-
-const STATUS_COLOR: Record<LeaveRequestStatus, string> = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  approved: 'bg-green-100 text-green-800',
-  rejected: 'bg-red-100 text-red-800',
-}
-
-function StatusBadge({ status }: { status: LeaveRequestStatus }) {
-  return (
-    <span
-      className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_COLOR[status]}`}
-    >
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  )
-}
+import StatusBadge from '../components/StatusBadge'
 
 export default function LeaveRequestListPage() {
   const { data: requests, isLoading, isError } = useQuery({
@@ -64,7 +48,8 @@ export default function LeaveRequestListPage() {
                   <th className="pb-2 pr-4 font-medium">Type</th>
                   <th className="pb-2 pr-4 font-medium">Start</th>
                   <th className="pb-2 pr-4 font-medium">End</th>
-                  <th className="pb-2 font-medium">Status</th>
+                  <th className="pb-2 pr-4 font-medium">Status</th>
+                  <th className="pb-2 font-medium"></th>
                 </tr>
               </thead>
               <tbody>
@@ -73,8 +58,16 @@ export default function LeaveRequestListPage() {
                     <td className="py-3 pr-4 capitalize">{req.type}</td>
                     <td className="py-3 pr-4">{req.start_date}</td>
                     <td className="py-3 pr-4">{req.end_date}</td>
-                    <td className="py-3">
+                    <td className="py-3 pr-4">
                       <StatusBadge status={req.status} />
+                    </td>
+                    <td className="py-3">
+                      <Link
+                        to={`/leave-requests/${req.id}`}
+                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        View →
+                      </Link>
                     </td>
                   </tr>
                 ))}
